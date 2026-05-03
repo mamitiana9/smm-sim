@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Smm Kingdom</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f5f5f5;
+    min-height: 100vh;
+  }
+
+  /* TOP BAR */
+  .top-bar {
+    background: #2196a6;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+  .top-bar .left { display: flex; gap: 14px; align-items: center; }
+  .top-bar .title { font-size: 16px; font-weight: 600; }
+  .top-bar .domain { font-size: 11px; opacity: 0.85; }
+  .top-bar .right { display: flex; gap: 14px; align-items: center; }
+  .top-bar svg { width: 20px; height: 20px; fill: white; cursor: pointer; }
+
+  /* HEADER */
+  .site-header {
+    background: white;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+  }
+  .logo { display: flex; align-items: center; gap: 6px; }
+  .logo-icon {
+    width: 42px; height: 42px;
+    background: #2196a6;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .logo-crown {
+    position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+    font-size: 14px;
+  }
+  .logo-text { font-size: 22px; font-weight: 700; }
+  .logo-smm { color: #e91e8c; }
+  .logo-kingdom { color: #2196a6; }
+  .balance-badge {
+    background: #f5a623;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 8px 16px;
+    border-radius: 8px;
+  }
+  .menu-btn {
+    background: none; border: 1px solid #ccc;
+    padding: 6px 10px; border-radius: 4px; cursor: pointer;
+    font-size: 18px; line-height: 1;
+  }
+
+  /* MAIN CONTENT */
+  .content {
+    padding: 20px 14px;
+  }
+
+  /* ALERT BANNERS */
+  .alert-failed {
+    background: white;
+    border-left: 4px solid #e74c3c;
+    padding: 14px 16px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    display: none;
+  }
+  .alert-failed h3 { color: #e74c3c; font-size: 17px; font-weight: 700; }
+
+  .alert-incorrect {
+    background: #fff8e1;
+    border: 1px solid #f5c518;
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    color: #7a5c00;
+    font-size: 14px;
+    display: none;
+  }
+
+  .alert-success {
+    background: #e8f5e9;
+    border: 1px solid #4caf50;
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    color: #2e7d32;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: center;
+    display: none;
+  }
+
+  /* SECURITY CARD */
+  .security-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+  }
+
+  .security-card h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 10px;
+  }
+
+  .security-card .instructions {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  /* CLOUDFLARE WIDGET */
+  .cf-widget {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .cf-left { display: flex; align-items: center; gap: 10px; }
+  .cf-spinner {
+    width: 26px; height: 26px;
+    position: relative;
+  }
+  .cf-spinner-ring {
+    width: 26px; height: 26px;
+    border: 3px solid #ddd;
+    border-top: 3px solid #222222;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .cf-checkmark {
+    display: none;
+    width: 26px; height: 26px;
+    background: #222222;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  #cf-status {
+    font-size: 14px;
+    color: #555;
+  }
+  #cf-status.success { color: #222222; font-weight: 600; }
+
+  .cf-right { text-align: right; }
+  .cf-logo { font-size: 12px; font-weight: 700; color: #f38020; letter-spacing: 1px; }
+  .cf-links { font-size: 11px; color: #777; margin-top: 2px; }
+  .cf-links a { color: #555; text-decoration: none; }
+
+  /* FORM */
+  .form-label {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  #answer {
+    width: 100%;
+    border: 1.5px solid #ccc;
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-size: 15px;
+    outline: none;
+    margin-bottom: 14px;
+    transition: border-color 0.2s;
+  }
+  #answer:focus { border-color: #2196a6; }
+
+  #submit-btn {
+    width: 100%;
+    background: #2257d4;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+    letter-spacing: 0.3px;
+  }
+  #submit-btn:hover { background: #1a45b0; }
+  #submit-btn:disabled { background: #9ab0e0; cursor: not-allowed; }
+
+  .time-badge {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 12px;
+    color: white;
+    background: #555;
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    width: 100%;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: #999;
+    border-top: 1px solid #eee;
+    margin-top: 24px;
+    background: white;
+  }
+
+  /* STATUS overlay (for ADB detection) */
+  #page-state {
+    position: fixed;
+    bottom: 8px; right: 8px;
+    background: rgba(0,0,0,0.6);
+    color: #aff;
+    font-size: 10px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    z-index: 999;
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="left">
+    <svg viewBox="0 0 24 24"><path d="M19 11H7.83l4.88-4.88-1.41-1.42L4 12l7.3 7.3 1.41-1.42L7.83 13H19v-2z"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+    <div>
+      <div class="title">Smm Kingdom</div>
+      <div class="domain">smmkingdom.com</div>
+    </div>
+  </div>
+  <div class="right">
+    <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+  </div>
+</div>
+
+<!-- SITE HEADER -->
+<div class="site-header">
+  <button class="menu-btn">☰</button>
+  <div class="logo">
+    <div class="logo-icon">
+      <span class="logo-crown">👑</span>
+      <!-- Telegram plane icon -->
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="white">
+        <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
+      </svg>
+    </div>
+    <div>
+      <span class="logo-smm">SMM</span><span class="logo-kingdom">Kingdom</span>
+    </div>
+  </div>
+  <div class="balance-badge">$ 713.0</div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- Alert: Verification Failed -->
+  <div class="alert-failed" id="alert-failed">
+    <h3>Verification failed</h3>
+  </div>
+
+  <!-- Alert: Incorrect answer -->
+  <div class="alert-incorrect" id="alert-incorrect">
+    Incorrect answer. Try again.
+  </div>
+
+  <!-- Alert: Final success -->
+  <div class="alert-success" id="alert-success">
+    ✅ Verification passed. Captcha completed.
+  </div>
+
+  <!-- Security Card -->
+  <div class="security-card" id="security-card">
+    <h2>Security check</h2>
+    <p class="instructions">
+      Find the Telegram image with emoji ▲, solve the math operation
+      displayed there, and submit the result below after completing the
+      Cloudflare challenge.
+    </p>
+
+    <!-- Cloudflare Widget -->
+    <div class="cf-widget">
+      <div class="cf-left">
+        <div class="cf-spinner">
+          <div class="cf-spinner-ring" id="cf-ring"></div>
+          <div class="cf-checkmark" id="cf-check">✓</div>
+        </div>
+        <span id="cf-status">Vérification...</span>
+      </div>
+      <div class="cf-right">
+        <div class="cf-logo">CLOUDFLARE</div>
+        <div class="cf-links">
+          <a href="#">Confidentialité</a> • <a href="#">Aide</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Answer form -->
+    <label class="form-label" for="answer">Answer</label>
+    <input type="text" id="answer" name="answer" placeholder="Enter answer" autocomplete="off">
+
+    <button id="submit-btn" onclick="handleSubmit()">Submit</button>
+
+    <div class="time-badge" id="time-badge">Time left: <span id="timer">45</span> sec</div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>Copyright © 2025. All rights reserved.</footer>
+
+<!-- DEBUG state indicator (for ADB script detection) -->
+<div id="page-state">state: verifying</div>
+
+<script>
+  // ─── STATE ───────────────────────────────────────────────────────────────
+  const CORRECT_ANSWER = "15";
+  let cfReady = false;      // true when Cloudflare says "Succès !"
+  let timerInterval = null;
+  let cfTimeout = null;
+
+  // ─── CLOUDFLARE SIMULATION ───────────────────────────────────────────────
+  function startCloudflare(duration = 15000) {
+    cfReady = false;
+    document.getElementById('cf-ring').style.display = 'block';
+    document.getElementById('cf-check').style.display = 'none';
+    const statusEl = document.getElementById('cf-status');
+    statusEl.textContent = 'Vérification...';
+    statusEl.className = '';
+    document.getElementById('page-state').textContent = 'state: verifying';
+
+    // Start countdown timer
+    let seconds = 45;
+    document.getElementById('timer').textContent = seconds;
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      seconds--;
+      document.getElementById('timer').textContent = seconds;
+      if (seconds <= 0) clearInterval(timerInterval);
+    }, 1000);
+
+    clearTimeout(cfTimeout);
+    cfTimeout = setTimeout(() => {
+      cfReady = true;
+      document.getElementById('cf-ring').style.display = 'none';
+      const check = document.getElementById('cf-check');
+      check.style.display = 'flex';
+      statusEl.textContent = 'Succès !';
+      statusEl.className = 'success';
+      document.getElementById('page-state').textContent = 'state: ready';
+    }, duration);
+  }
+
+  // ─── SUBMIT HANDLER ──────────────────────────────────────────────────────
+  function handleSubmit() {
+    const val = document.getElementById('answer').value.trim();
+
+    // Guard: Cloudflare not done
+    if (!cfReady) {
+      alert('⚠️ FATAL ERROR: Cloudflare verification not complete. Wait for "Succès !" before submitting.');
+      return;
+    }
+
+    if (val === CORRECT_ANSWER) {
+      // ── SUCCESS ──
+      document.getElementById('alert-failed').style.display = 'none';
+      document.getElementById('alert-incorrect').style.display = 'none';
+      document.getElementById('security-card').style.display = 'none';
+      document.getElementById('alert-success').style.display = 'block';
+      document.getElementById('page-state').textContent = 'state: passed';
+      clearInterval(timerInterval);
+    } else {
+      // ── FAILURE ──
+      document.getElementById('alert-failed').style.display = 'block';
+      document.getElementById('alert-incorrect').style.display = 'block';
+      document.getElementById('page-state').textContent = 'state: failed';
+      // Reset Cloudflare widget for next attempt
+      setTimeout(() => startCloudflare(15000), 300);
+    }
+  }
+
+  // ─── ENTER KEY SUPPORT ───────────────────────────────────────────────────
+  document.getElementById('answer').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') handleSubmit();
+  });
+
+  // ─── INIT ────────────────────────────────────────────────────────────────
+  startCloudflare(15000);
+</script>
+</body>
+</html>
