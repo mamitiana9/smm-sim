@@ -197,6 +197,10 @@
     margin-bottom: 14px;
     transition: border-color 0.2s;
   }
+  /* Supprimer les fleches haut/bas du type=number */
+  #answer::-webkit-outer-spin-button,
+  #answer::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  #answer[type=number] { -moz-appearance: textfield; }
   #answer:focus { border-color: #2196a6; }
 
   #submit-btn {
@@ -334,7 +338,7 @@
 
     <!-- Answer form -->
     <label class="form-label" for="answer">Answer</label>
-    <input type="text" id="answer" name="answer" placeholder="Enter answer" autocomplete="off">
+    <input type="number" id="answer" name="answer" placeholder="Enter answer" autocomplete="off" inputmode="numeric" pattern="[0-9]*">
 
     <button id="submit-btn" onclick="handleSubmit()">Submit</button>
 
